@@ -1,24 +1,43 @@
 export function substring(str, indexStart, indexEnd) {
+  console.log("" + str + "," + indexStart + "," + indexEnd);
+  let originalStart = indexStart
   if (indexStart === undefined || isNaN(indexStart) || indexStart < 0) {
     indexStart = 0;
   } else {
     indexStart = Math.floor(indexStart);
   }
 
-  if (indexEnd === undefined || isNaN(indexEnd) || indexEnd > str.length) {
-    indexEnd = str.length;
+  if (indexEnd === undefined || indexEnd > str.length) {
+    if(originalStart > str.length) {
+      return '';
+    } else {
+      indexEnd = str.length;
+    }
   } else {
     indexEnd = Math.floor(indexEnd);
   }
+  
+  if(isNaN(indexEnd)){
+    indexEnd = 0;
+  }
 
   if (indexStart > indexEnd) {
-    return '';
+    let temp = indexStart
+    indexStart = indexEnd
+    indexEnd = temp
+    if (indexStart === undefined || isNaN(indexStart) || indexStart < 0) {
+      indexStart = 0;
+    }
+    if (indexEnd > str.length) {
+      indexEnd = str.length;
+    }
   }
 
   let result = '';
   for (let i = indexStart; i < indexEnd; i++) {
     result += str[i];
   }
+  console.log("" + result);
   return result;
 }
 
@@ -33,8 +52,10 @@ export function slice(str, indexStart, indexEnd) {
 
   if (indexEnd < 0) {
     indexEnd = str.length + indexEnd;
-  } else if (isNaN(indexEnd) || indexEnd === undefined) {
+  } else if (indexEnd === undefined) {
     indexEnd = str.length;
+  } else if (isNaN(indexEnd)) {
+    indexEnd = 0;
   } else {
     indexEnd = Math.floor(indexEnd);
   }
