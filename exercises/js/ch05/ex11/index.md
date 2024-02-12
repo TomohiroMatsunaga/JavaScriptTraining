@@ -1,0 +1,3 @@
+node --inspect index.js
+のようにinspectオプションを付けてプログラムを実行するとNode.jsがデバッグサーバーを立ち上げる。
+Chrome DevToolsなどを使用してデバッグサーバーにアクセスすることでdebugger文をデバッグすることができる。
