@@ -1,0 +1,36 @@
+class TypedMap extends Map {
+    constructor(keyType, valueType, entries) {
+        // エントリが指定されている場合、その型をチェックします。
+        if (entries) {
+            for (let [k, v] of entries) {
+                if (typeof k !== keyType || typeof v !== valueType) {
+                    throw new TypeError(`エントリの型が間違っています (${k}, ${v})`);
+                }
+            }
+        }
+
+        // 型チェック済みのエントリを使用してスーパークラスを初期化します。
+        super(entries);
+
+        // 次に、型を保存し、サブクラスを初期化します。
+        this.keyType = keyType;
+        this.valueType = valueType;
+    }
+
+    // キーバリューペアをマップに追加するためのset()メソッドを再定義します。
+    // 型チェックを確実に行うようにしてください。
+    set(key, value) {
+        // キーと値の型が異なる場合はエラーを投げます。
+        if (this.keyType && typeof key !== this.keyType) {
+            throw new TypeError(`${key} は型 ${this.keyType} ではありません`);
+        }
+
+        if (this.valueType && typeof value !== this.valueType) {
+            throw new TypeError(`${value} は型 ${this.valueType} ではありません`);
+        }
+
+        // 型が正しい場合、スーパークラスのset()メソッドを呼び出し、エントリをマップに追加します。
+        // スーパークラスから返されるものをそのまま返します。
+        return super.set(key, value);
+    }
+}
