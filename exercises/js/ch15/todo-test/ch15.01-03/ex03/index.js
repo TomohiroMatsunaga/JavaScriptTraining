@@ -1,0 +1,1 @@
+document.getElementById('message').textContent = "integrity 属性の検証成功";

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>動的インポート</title>
+</head>
+<body>
+    <h1>動的インポート</h1>
+    <script type="module">
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                // 動的にindex.jsをインポート
+                const module = await import('./index.js');
+                const message = await module.text; //ここでエラーになる
+                alert(message);
+                console.log("index.jsが正常にインポートされました");
+            } catch (error) {
+                console.error("index.jsのインポート中にエラーが発生しました:", error);
+            }
+        });
+    </script>
+</body>
+</html>
