@@ -1,53 +1,28 @@
-import { test, expect } from "@playwright/test";
+const { test, expect } = require('@playwright/test');
 
-function gotoTestTarget(page) {
-  return page.goto("http://localhost:8080/index.html");
-}
-
-function getDiv(page) {
-  return page.getByTestId("editor-front");
-}
-
-function getInput(page) {
-  return page.getByRole("textbox");
-}
-
-test.describe("div & input Site", () => {
-  test("When it clicks the div, then it focus the input", async ({ page }) => {
-    await gotoTestTarget(page);
-    await getDiv(page).click();
-    await expect(getInput(page)).toBeFocused();
+test.describe('Product List', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('http://127.0.0.1:8080');
   });
 
-  test("When it focus the input, the color of the div is silver", async ({
-    page,
-  }) => {
-    await gotoTestTarget(page);
-    await expect(getDiv(page)).toHaveCSS(
-      "background-color",
-      "rgb(255, 255, 255)"
-    );
-    await getDiv(page).click();
-    await expect(getDiv(page)).toHaveCSS(
-      "background-color",
-      "rgb(192, 192, 192)"
-    );
-    await getInput(page).blur();
-    await expect(getDiv(page)).toHaveCSS(
-      "background-color",
-      "rgb(255, 255, 255)"
-    );
+  test('カテゴリーをすべてにしたとき', async ({ page }) => {
+    await page.selectOption('[data-testid="select"]', 'all');
+    await expect(page.locator('[data-testid="food1"]')).toBeVisible();
+    await expect(page.locator('[data-testid="stationery1"]')).toBeVisible();
+    await expect(page.locator('[data-testid="stationery2"]')).toBeVisible();
   });
 
-  test("When it input texts, then the div displays texts", async ({ page }) => {
-    await gotoTestTarget(page);
-    await getInput(page).fill("Hello!");
-    await expect(getDiv(page)).toHaveText("Hello!");
+  test('カテゴリーを食品にしたとき', async ({ page }) => {
+    await page.selectOption('[data-testid="select"]', 'food');
+    await expect(page.locator('[data-testid="food1"]')).toBeVisible();
+    await expect(page.locator('[data-testid="stationery1"]')).not.toBeVisible();
+    await expect(page.locator('[data-testid="stationery2"]')).not.toBeVisible();
   });
 
-  test("When it input dangerous texts, then the div displays sanitiezed texts", async ({ page }) => {
-    await gotoTestTarget(page);
-    await getInput(page).fill("<div>Hello!</div>");
-    await expect(getDiv(page)).toHaveText("<div>Hello!</div>");
+  test('カテゴリーを文房具にしたとき', async ({ page }) => {
+    await page.selectOption('[data-testid="select"]', 'stationery');
+    await expect(page.locator('[data-testid="food1"]')).not.toBeVisible();
+    await expect(page.locator('[data-testid="stationery1"]')).toBeVisible();
+    await expect(page.locator('[data-testid="stationery2"]')).toBeVisible();
   });
 });
