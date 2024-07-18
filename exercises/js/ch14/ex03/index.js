@@ -1,4 +1,3 @@
-// IgnoreAccentPattern クラスを定義
 class IgnoreAccentPattern {
     constructor(pattern) {
       if (typeof pattern === 'string') {
@@ -40,6 +39,5 @@ class IgnoreAccentPattern {
     }
   }
   
-  // IgnoreAccentPattern クラスをエクスポート
   export { IgnoreAccentPattern };
   
