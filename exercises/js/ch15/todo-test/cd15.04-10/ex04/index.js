@@ -68,17 +68,19 @@
       link.href = `#${fragmentName}`;
       link.innerHTML = heading.innerHTML;
   
-      /* 追加分 */
+      /* 追加分(開始) */
       link.addEventListener("click", (e) => {
         e.preventDefault();
-        const target = document.querySelector(`a[name="${fragmentName}"]`);
+        const target = document.querySelector(`a[name="${fragmentName}"]`); // name属性がfragmentNameの要素を探す
         if (!target) {
-          return;
+          return; // ターゲットが見つからない場合は何もしない
         }
   
-        /* スムーズにスクロール */
-        target.scrollIntoView({ behavior: "smooth" });
+        /* スムーズにスクロールするための記述 */
+        target.scrollIntoView({ behavior: "smooth" }); //ターゲットまで移動
       });
+
+      /* 追加分(終了) */
   
       let entry = document.createElement("div");
       entry.classList.add("TOCEntry", `TOCLevel${level}`);

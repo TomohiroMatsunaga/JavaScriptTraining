@@ -20,9 +20,15 @@ class TodoApp extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true)); // templateの内容をクローンしてShadow DOMに追加
 
     this.form = this.shadowRoot.querySelector("#new-todo-form"); //new-todo-form要素の取得
+
+    //-----実装部分（開始）-----
+    //Web Componentsを使ってカスタムな<todo-app>を作っている。要素は既にtemplate.で定義されている
+    
     this.todoList = this.shadowRoot.querySelector("#todo-list"); //todo-list要素の取得
     this.input = this.shadowRoot.querySelector("#new-todo"); //new-todo要素の取得
 
+    //以下は基本的にはcd15.04-10\ex01で記述したコードをコピーした。
+    
     this.form.addEventListener("submit", (e) => {
       e.preventDefault(); // フォームのデフォルトの送信動作を防ぐ
 
@@ -63,6 +69,8 @@ class TodoApp extends HTMLElement {
       elem.appendChild(div); 
       this.todoList.prepend(elem); // 先頭に追加
     });
+
+    //-----実装部分（終了）-----
   }
 }
 
