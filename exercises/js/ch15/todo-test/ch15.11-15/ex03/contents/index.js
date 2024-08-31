@@ -1,4 +1,7 @@
-console.log(document.cookie); // クッキーの内容をコンソールに表示する
+//この問題ではfetchする際に以下のオプションを付けた
+// credentials: 'include', // Cookie の送信を許可する
+// mode: 'cors' // CORSモードでのリクエスト
+// server.jsにも2箇所変更を加えている
 
 const form = document.querySelector("#new-todo-form");
 const list = document.querySelector("#todo-list");
@@ -11,7 +14,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     //---start---
     // サーバーにGETリクエストを送り、タスクのデータを取得する
-    const response = await fetch('http://localhost:3001/api/tasks');
+    const response = await fetch('http://localhost:3001/api/tasks', {
+      method: 'GET',
+      credentials: 'include', // Cookie の送信を許可する
+      mode: 'cors' // CORSモードでのリクエスト
+    });
   
     // もしリクエストが成功しなかった場合、エラーメッセージを表示します
     if (!response.ok) {
@@ -56,6 +63,8 @@ form.addEventListener("submit", async (e) => {
     // サーバーにPOSTリクエストを送り、タスクを追加
     const response = await fetch('http://localhost:3001/api/tasks', {
       method: 'POST',
+      credentials: 'include', // Cookie の送信を許可する
+      mode: 'cors', // CORSモードでのリクエスト
       headers: {
         'Content-Type': 'application/json' //データの形式をJSONに指定
       },
@@ -101,6 +110,8 @@ function appendToDoItem(task) {
     try {
       const response = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
         method: 'PATCH',
+        credentials: 'include', // Cookie の送信を許可する
+        mode: 'cors', // CORSモードでのリクエスト
         headers: {
           'Content-Type': 'application/json'
         },
@@ -134,7 +145,9 @@ function appendToDoItem(task) {
     try {
       //タスクをサーバーから削除する
       const response = await fetch(`http://localhost:3001/api/tasks/${task.id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include', // Cookie の送信を許可する
+        mode: 'cors' // CORSモードでのリクエスト
       });
 
       // もしリクエストが成功しなかった場合、エラーメッセージを表示します

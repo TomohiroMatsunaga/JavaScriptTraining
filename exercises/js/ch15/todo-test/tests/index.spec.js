@@ -1,32 +1,35 @@
 const { test, expect } = require('@playwright/test');
-test.use({ headless: false }); // ヘッドレスモードを無効にして可視化
-test('フィルタが作用しているか', async ({ page }) => {
+
+test.use({ headless: false }); // ヘッドレスモード(ブラウザを画面に表示せずにバックグラウンドで動作させるモード)を無効にして可視化
+
+test('ToDoの内容が維持されることを確認', async ({ page, context }) => {
+  // ページを起動
   await page.goto('http://127.0.0.1:8080');
 
-  // ToDoを追加
+  // ToDoを2つ追加
   await page.fill('#new-todo', 'ToDo1');
-  await page.click('button'); // Addボタンをクリック
+  await page.click('button');
   await page.fill('#new-todo', 'ToDo2');
-  await page.click('button'); // Addボタンをクリック
-  await page.fill('#new-todo', 'ToDo3');
-  await page.click('button'); // Addボタンをクリック
+  await page.click('button');
 
-  // ToDo1を完了状態にする
-  const firstTodoToggle = await page.$('#todo-list li:nth-of-type(1) .toggle'); //liの1番最初のものを取得
-  await firstTodoToggle.click();
+  // ページをリロードしてToDoが2つ残っているか確認
+  await page.reload();
+  const todosAfterReload = await page.$$('#todo-list li');
+  await expect(todosAfterReload.length).toBe(2);
 
-  // Activeをクリック
-  await page.click('a[href="#/active"]');
-  const activeTodos = await page.$$('#todo-list li:not(.completed)'); // 未完了のToDoを取得
-  await expect(activeTodos.length).toBe(2); //未完了のToDoが2つあることを確認
+  // 新しいタブでToDoが2つ残っているか確認
+  const newTab = await context.newPage();
+  await newTab.goto('http://127.0.0.1:8080');
+  await newTab.waitForTimeout(500); // 0.5秒待機
+  const todosInNewTab = await newTab.$$('#todo-list li');
+  await expect(todosInNewTab.length).toBe(2);
 
-  // Completedをクリック
-  await page.click('a[href="#/completed"]');
-  const completedTodos = await page.$$('#todo-list li.completed'); // 完了済みのToDoを取得
-  await expect(completedTodos.length).toBe(1); //完了済みのToDoが1つあることを確認
+  // 新しいタブでToDoを追加する
+  await newTab.fill('#new-todo', 'ToDo3');
+  await newTab.click('button'); // Addボタンをクリック
 
-  // Allをクリック
-  await page.click('a[href="#/"]');
-  const allTodos = await page.$$('#todo-list li'); // すべてのToDoを取得
-  await expect(allTodos.length).toBe(3); //ToDoが3あることを確認
+  // 最初のタブに戻って、変更が反映されているか確認
+  await page.waitForTimeout(500); // 0.5秒待機
+  const todosInOriginalTab = await page.$$('#todo-list li');
+  await expect(todosInOriginalTab.length).toBe(3); // ToDoが3つあることを確認
 });
