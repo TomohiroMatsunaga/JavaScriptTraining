@@ -1,19 +1,20 @@
-//「window.addEventListener('storage', (event) => {」でlocalStorageに保存したデータを表示して、
-// saveTodosでToDoのリストをlocalStorageに保存している
+//localStorageはデータがパソコンやスマホの中に保存され、ブラウザを閉じても消えない
+//sessionStorageはブラウザを閉じると消える
+//やったこと問４のコードをそのままコピーし、「キー名の変更」と「localStorage.getItemをsessionStorage.getItemに変更」と「localStorage.setItemをsessionStorage.setItemに変更」を実施しただけ
 
 const form = document.querySelector("#new-todo-form");
 const list = document.querySelector("#todo-list");
 const input = document.querySelector("#new-todo");
 
-// localStorage のキー名を定義
-const LOCAL_STORAGE_KEY = 'todoApp.todos';
+// sessionStorage のキー名を定義
+const SESSION_STORAGE_KEY = 'todoApp.todos';
 
-// データ同期（localStorageの内容を画面に表示させる（appendToDoItemに渡す））
-// localStorageが変更されたときに全てのタブでstorageイベントが発生することを利用して異なるタブ間で表示内容を同期させる
+// データ同期（sessionStorageの内容を画面に表示させる（appendToDoItemに渡す））
+// sessionStorageが変更されたときに全てのタブでstorageイベントが発生することを利用して異なるタブ間で表示内容を同期させる
 window.addEventListener('storage', (event) => {
-  if (event.key === LOCAL_STORAGE_KEY || event.type === 'storage') { //KeyとTypeの確認
+  if (event.key === SESSION_STORAGE_KEY || event.type === 'storage') { //KeyとTypeの確認
     list.innerHTML = '';
-    const storedTodos = localStorage.getItem(LOCAL_STORAGE_KEY);
+    const storedTodos = sessionStorage.getItem(SESSION_STORAGE_KEY);
     if (storedTodos) {
       const todos = JSON.parse(storedTodos); //文字列で保存されたJSON形式のデータをJavaScriptのオブジェクトや配列に変換する。
       todos.forEach(task => appendToDoItem(task)); // ToDoリストの各タスクを画面に表示する
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.dispatchEvent(new Event('storage'));
 });
 
-// ToDoのリストをlocalStorageに保存する関数
+// ToDoのリストをsessionStorageに保存する関数
 function saveTodos() {
   try {
     const tasks = [];
@@ -39,10 +40,10 @@ function saveTodos() {
         status: item.querySelector("input[type='checkbox']").checked ? 'completed' : 'active'
       });
     });
-    //localStorageにセット
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
+    //sessionStorageにセット
+    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(tasks));
   } catch (e) {
-    console.warn("LocalStorage is not available. Changes will not be saved.");
+    console.warn("SessionStorage is not available. Changes will not be saved.");
   }
 }
 
