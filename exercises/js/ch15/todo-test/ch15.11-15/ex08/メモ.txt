@@ -1,0 +1,4 @@
+sercer.jsは変更していない。
+問題の1番目のsendRequest はHTML内に埋め込んでいる。
+responder.jsは受け取ったメッセージに"Hello, "を付けて返すだけ。
+実行するにはサーバーの実行、HTMLの実行、Responderの実行(node responder.js)が必要

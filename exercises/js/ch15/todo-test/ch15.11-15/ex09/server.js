@@ -1,3 +1,5 @@
+//updateGridの実装を移植したのみ。変更していない。
+
 import WebSocket, { WebSocketServer } from "ws";
 
 // 50 x 50 の盤面とする
@@ -62,6 +64,48 @@ function updateGrid(grid) {
     for (let col = 0; col < COLS; col++) {
       // 周囲のセルの生存数を数えて nextGrid[row][col] に true or false を設定する
       //（15.04-10.10の実装を利用）
+
+
+      //-----移植部分開始位置
+
+      // 周囲のセルの生存数の合計
+      let livingNeighbors = 0;
+
+      // 8つの近隣セルの座標
+      const neighbors = [
+        [-1, -1], [-1, 0], [-1, 1],
+        [ 0, -1],          [ 0, 1],
+        [ 1, -1], [ 1, 0], [ 1, 1]
+      ];
+
+      //8つの隣接するセルを調べて、生存していたら(trueなら)livingNeighborsに1を足す
+      neighbors.forEach(([dx, dy]) => {
+        const x = row + dx;
+        const y = col + dy;
+        
+        // グリッドの範囲内であるかをチェック
+        if (x >= 0 && x < ROWS && y >= 0 && y < COLS) {
+          livingNeighbors += grid[x][y] ? 1 : 0;
+        }
+      });
+
+      // 更新するセルの現在の状態
+      const isAlive = grid[row][col];
+
+      // ゲームのルールに従って次の状態を決定
+      // 「自身が生きていて周りに生きている細胞が1つもない」or「自身が生きていて4つ以上生きている細胞がある」ときは死ぬ
+      if (isAlive && (livingNeighbors < 2 || livingNeighbors > 3)) {
+        nextGrid[row][col] = false;
+      } 
+      // 「自身が死んでいて周りに丁度3つの生きている細胞がある」ときは誕生する
+      else if (!isAlive && livingNeighbors === 3) {
+        nextGrid[row][col] = true;
+      }
+      //その他の場合は細胞の死や誕生に影響しない
+
+      //-----移植部分終了位置
+
+
     }
   }
   return nextGrid;

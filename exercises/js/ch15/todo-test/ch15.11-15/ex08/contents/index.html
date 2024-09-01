@@ -1,0 +1,82 @@
+<!-- 3つの入力フォームとメッセージをサーバーに送るスクリプトを書いた。 -->
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket ToDo Example</title>
+</head>
+<body>
+    <!-- div(division): グループ化するコンテナ, input:ユーザーからのデータ入力を受け取るための要素, p(paragraph):テキストの段落を示すブロック -->
+    <div>
+        <input type="text" id="request1" placeholder="Enter your request 1">
+        <button onclick="handleRequest('request1', 'response1')">Send Request 1</button>
+        <p id="response1"></p>
+    </div>
+    <div>
+        <input type="text" id="request2" placeholder="Enter your request 2">
+        <button onclick="handleRequest('request2', 'response2')">Send Request 2</button>
+        <p id="response2"></p>
+    </div>
+    <div>
+        <input type="text" id="request3" placeholder="Enter your request 3">
+        <button onclick="handleRequest('request3', 'response3')">Send Request 3</button>
+        <p id="response3"></p>
+    </div>
+
+    <script>
+        // 問題の指定「引数としてリクエスト本文を受け取り、返り値としてレスポンス本文が得られる Promise<string> を返すこと」に従って実装した
+        function sendRequest(message) {
+            return new Promise((resolve, reject) => {
+                const ws = new WebSocket("ws://localhost:3003");
+                //問題の指定「送信するメッセージの形式は、リクエストが複数並行して送信されてもよいよう考慮すること」と
+                //「どのリクエストに対するレスポンスか、リクエストした側で判別できるようにすること。」を満たすために毎回idを作成
+                const requestId = Date.now().toString(); // リクエストを識別するためのIDを生成
+
+                // 接続が確立されたときにメッセージを送信
+                ws.onopen = () => {
+                    const requestPayload = JSON.stringify({ id: requestId, message }); //JavaScriptのオブジェクトをJSONに変換して送信
+                    ws.send(requestPayload);
+                };
+
+                // メッセージを受信したとき
+                // 問題の指定「一定時間内にレスポンスを受信したら、Promise が resolve されること。」に従って実装。「一定時間内にレスポンスを受信したら、」の部分は下部のタイムアウトで対応
+                ws.onmessage = (event) => {
+                    const response = JSON.parse(event.data);
+                    //問題の指定「送信するメッセージの形式は、リクエストが複数並行して送信されてもよいよう考慮すること」を満たすために毎回idをチェック
+                    if (response.id === requestId) {
+                        resolve(response.message);  // ここでレスポンスのメッセージを返す
+                        ws.close(); // 接続を閉じる
+                    }
+                };
+
+                // 接続が切れたとき
+                // 問題の指定「WebSocket の接続が切断した場合、Promise が reject されること。」に従って実装
+                ws.onclose = () => {
+                    reject("WebSocket connection closed");
+                };
+
+                // タイムアウトを設定(10秒経過でリジェクト)
+                // 問題の指定「一定時間経過時にタイムアウトし、Promise が reject されること。」に従って実装した
+                setTimeout(() => {
+                    reject("Request timed out");
+                    ws.close();
+                }, 10000);
+            });
+        }
+
+        // ボタンが押されたとき、指定されたリクエストIDとレスポンスIDに基づいて sendRequestを実行し、返り値の結果を表示する関数
+        async function handleRequest(requestId, responseId) {
+            const input = document.getElementById(requestId);
+            const responseElement = document.getElementById(responseId);
+            try {
+                const response = await sendRequest(input.value);
+                responseElement.textContent = `${response}`;
+            } catch (error) {
+                responseElement.textContent = `Error: ${error}`;
+            }
+        }
+    </script>
+</body>
+</html>
