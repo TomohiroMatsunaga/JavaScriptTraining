@@ -1,0 +1,8 @@
+ここからアクセストークンを取得
+https://developer.microsoft.com/en-us/graph/graph-explorer
+
+このAPIを利用
+https://learn.microsoft.com/ja-jp/graph/api/driveitem-put-content?view=graph-rest-1.0&tabs=http
+
+PUT https://graph.microsoft.com/v1.0/me/drive/root:/FolderA/FileB.txt:/content
+Content-Type: text/plain

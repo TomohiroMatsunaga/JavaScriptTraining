@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload to OneDrive</title>
+</head>
+<body>
+    <h2>OneDriveにファイルをアップロードする</h2>
+
+    <!-- アクセストークンを入力するためのテキストボックス -->
+    <input type="text" id="accessToken" placeholder="アクセストークンを入力してください" style="width: 100%;"><br><br>
+
+    <!-- アップロードするファイルを選択する -->
+    <label for="fileInput">アップロードするファイルを選択する</label><br>
+    <!-- ファイルを選ぶための入力フィールド。ボタンをクリックすることでファイルを選ぶことができる -->
+    <input type="file" id="fileInput"><br><br>
+
+    <!-- ファイルをアップロードするフォルダのパスを指定する -->
+    <label for="folderPath">アップロードするフォルダのパスを指定する (例：/Documents)</label><br>
+    <input type="text" id="folderPath" placeholder="/Documents" style="width: 100%;"><br><br>
+
+    <!-- このアップロードボタンを押すとファイルがOneDriveにアップロードされる -->
+    <button id="uploadButton">アップロード</button><br><br>
+
+    <!-- エラーが発生したとき、ファイルが正常にアップロードされたとき、ここにメッセージを表示する -->
+    <div id="message"></div>
+
+    <script>
+        // アップロードボタンがクリックされたときに呼ばれる
+        document.getElementById('uploadButton').addEventListener('click', async function() {
+            const accessToken = document.getElementById('accessToken').value; // アクセストークン
+            const fileInput = document.getElementById('fileInput'); // 選択されたファイル
+            const folderPath = document.getElementById('folderPath').value || '/Documents'; // アップロードするフォルダのパス。入力がない場合は「/Documents」をデフォルトに設定
+
+            // アクセストークンが設定されているか確認する
+            if (!accessToken) {
+                document.getElementById('message').innerText = 'アクセストークンが設定されていません';
+                return;
+            }
+
+            // ファイルが選択されているか確認する
+            if (!fileInput.files.length) { //選択されたファイル数が0のときはif文に入る
+                // どちらかが入力されていない場合、エラーメッセージを表示して処理を終了
+                document.getElementById('message').innerText = 'ファイルが選択されていません';
+                return;
+            }
+
+            // 選択されたファイルを取得
+            const file = fileInput.files[0];
+            // ファイル名を取得
+            const fileName = file.name;
+
+            try {
+                const fileArrayBuffer = await file.arrayBuffer(); // ファイルをバイナリデータに変換
+
+                // OneDriveのGraph APIを使ってファイルをアップロードするためのURL
+                const uploadUrl = `https://graph.microsoft.com/v1.0/me/drive/root:${folderPath}/${fileName}:/content`;
+
+                // fetch関数を使ってファイルをアップロード
+                const response = await fetch(uploadUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`, // アクセストークンを使う
+                        'Content-Type': file.type || 'application/octet-stream' // ファイルの種類を設定。指定されていない場合はデフォルトの値を使用
+                    },
+                    body: fileArrayBuffer // アップロードするファイルのバイナリデータ
+                });
+
+                // レスポンスの確認
+                if (response.ok) {
+                    // アップロードが成功したとき
+                    document.getElementById('message').innerText = `ファイルのアップロードに成功しました！`;
+                } else {
+                    // アップロードに失敗したとき、エラーメッセージを表示
+                    const errorResponse = await response.json();
+                    document.getElementById('message').innerText = `アップロードに失敗しました: ${errorResponse.error.message}`;
+                }
+            } catch (error) {
+                // サーバーとの通信中に何かエラーが発生したとき、エラーメッセージを表示
+                document.getElementById('message').innerText = `サーバーとの通信中に何かエラーが発生しました: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
