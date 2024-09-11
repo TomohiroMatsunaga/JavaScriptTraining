@@ -17,7 +17,7 @@ async function getMessageFromServer() {
   // ボタンを無効化
   button.disabled = true;
 
-  // サーバーとの通信を開始
+  // EventSourceでサーバーとの通信を開始（EventSourceはブラウザとサーバーが一方向で通信するための機能。リアルタイムでメッセージ（データ）を送り続けることができる。今回はサーバー→ブラウザ）
   const eventSource = new EventSource("http://localhost:3000/message");
 
   // サーバーからメッセージが届いたら表示
