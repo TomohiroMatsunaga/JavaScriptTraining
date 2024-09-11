@@ -1,0 +1,2 @@
+http://localhost:3000でindex.httpにあくせすること
+http://127.0.0.1:8080/では失敗する。

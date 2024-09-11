@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ollama Chat</title>
+    <style>
+        #chatbox {
+            width: 100%; /* チャッットボックスの幅を画面いっぱいにする */
+            height: 400px; /* チャットボックスの高さを400pxに設定 */
+            overflow-y: scroll; /* チャットボックスをスクロール可能にする */
+            background-color: #f9f9f9; /* チャットボックスの背景を灰色にする */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>生成AIとチャット with Ollama</h1>
+    <div id="chatbox"></div>
+    <input type="text" id="userInput" placeholder="メッセージを入力...">
+    <button id="sendButton">送信</button>
+
+    <script>
+        // サーバーにメッセージを送信して、逐次応答を取得する関数
+        async function sendMessage(message) {
+            // HTTP POSTリクエスト
+            const response = await fetch('http://localhost:11434/api/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: "gemma2:2b", // 使うAIモデルの名前
+                    prompt: message, // ユーザーが入力したメッセージ
+                    stream: true  // 逐次表示を行うためにストリーミングを有効にする
+                })
+            });
+
+            const reader = response.body.getReader();  // 応答のストリームを受け取るためのリーダーを作成
+            const decoder = new TextDecoder('utf-8'); // 受け取ったバイナリデータをテキストに変換するためのデコーダー
+            let tempBuffer = '';  // テキストを保持する一時的なバッファ
+
+            while (true) {
+                const { done, value } = await reader.read(); // readerからデータを読み込む
+                if (done) break; //データの読み込みが全て終わっていたら終了
+
+                const decodedValue = decoder.decode(value, { stream: true }); //デコーダーを使って受け取ったバイナリデータをテキストに変換。 { stream: true }でデータが部分的に受け取っていたとしても繋げてくれる。　例 '{ "response": "こんにちは" }\n{ "response": "今日もいい天気ですね" }\n'
+                const jsonResponses = decodedValue.split('\n').filter(Boolean); //デコードされたテキストを改行コードで配列に分割する（改行コードがなければ1つの要素になる）。filter(Boolean)はnullや空文字やundefinedが入った要素を削除する。 例 jsonResponses = ['{ "response": "こんにちは" }', '{ "response": "今日もいい天気ですね" }'];
+
+                // 改行で分割された、受け取ったテキストの配列１つ１つに対して処理を行う。
+                jsonResponses.forEach((jsonResponse) => {
+                    try {
+                        const parsed = JSON.parse(jsonResponse.trim()); //trim()で前後の空白文字を削除。Jsonをオブジェクトに変換。{ "response": "こんにちは" }→{ response: "こんにちは" }
+                        if (parsed.response) {
+                            tempBuffer += parsed.response;  // バッファに部分的に受け取ったメッセ―ジを格納
+
+                            // バッファが句読点を含んでいたら、分割して表示する
+                            if (tempBuffer.match(/[。、,.]/)) {
+
+                                const chatbox = document.getElementById('chatbox') // チャットボックスを取得
+                                chatbox.innerHTML += `<div>${tempBuffer}</div>`; // バッファが持つテキストを出力
+                                chatbox.scrollTop = chatbox.scrollHeight; // チャットボックスを一番下までスクロール
+                                tempBuffer = ''; // バッファを空にする
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+
+            // 句読点が無い場合かここでバッファに格納されているメッセージが表示される。
+            if (tempBuffer) {
+                document.getElementById('chatbox').innerHTML += `<div>${tempBuffer}</div>`; // バッファが持つテキストを出力
+                chatbox.scrollTop = chatbox.scrollHeight; // チャットボックスを一番下までスクロール
+            }
+        }
+
+        // 送信ボタンが押されたときにメッセージを送信する。ユーザーの入力を表示する
+        document.getElementById('sendButton').addEventListener('click', () => {
+            const userInput = document.getElementById('userInput').value; //ユーザーが入力したテキストを取得
+            document.getElementById('chatbox').innerHTML += `<div><strong>You:</strong> ${userInput}</div>`; //チャットボックスに表示
+            sendMessage(userInput);
+            document.getElementById('userInput').value = '';  // テキストボックスをクリア
+        });
+    </script>
+</body>
+
+</html>
