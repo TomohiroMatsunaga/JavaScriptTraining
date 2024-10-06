@@ -4,7 +4,7 @@ test.use({ headless: false }); // ヘッドレスモード(ブラウザを画面
 
 test('ToDoの内容が維持されることを確認', async ({ page, context }) => {
   // ページを起動
-  await page.goto('http://127.0.0.1:8080');
+  await page.goto('http://172.25.96.1:8080');
 
   // ToDoを2つ追加
   await page.fill('#new-todo', 'ToDo1');
@@ -19,7 +19,7 @@ test('ToDoの内容が維持されることを確認', async ({ page, context })
 
   // 新しいタブでToDoが2つ残っているか確認
   const newTab = await context.newPage();
-  await newTab.goto('http://127.0.0.1:8080');
+  await newTab.goto('http://172.25.96.1:8080');
   await newTab.waitForTimeout(500); // 0.5秒待機
   const todosInNewTab = await newTab.$$('#todo-list li');
   await expect(todosInNewTab.length).toBe(2);
