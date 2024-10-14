@@ -39,7 +39,17 @@ class PipeCmd {
 //   new RedirCmd(new ExecCmd(["tr", "[:upper:]", "[:lower:]"]), "hello.txt", ">")
 // )
 
+//　RedirCmdの定義
+// class RedirCmd {
+//   constructor(cmd, file, type) {
+//     this.type = type; // "<" or ">"
+//     this.cmd = cmd;
+//     this.file = file;
+//   }
+// }
+
 // コマンドを実行する関数
+// 第一引数に実行するコマンドのオブジェクト、第２引数にデータを入力するストリーム、第３引数に出力したデータを受け取るストリーム
 async function runcmd(cmd, stdin = null, stdout = null) {
   switch (cmd.type) {
     case " ": // ExecCmd
@@ -69,6 +79,12 @@ async function runcmd(cmd, stdin = null, stdout = null) {
       {
         // FIXME: ここを実装してね (2行程度)
         // HINT: cmd.file のストリームを createWriteStream で作成し runcmd を再帰的に呼び出す
+
+        // よくわからない。上記のHINTの通り実装してみたらとりあえず動いた。
+        //　出力リダイレクト（ファイルに保存する）機能の実装。
+        const outStream = fs.createWriteStream(cmd.file); // ファイル書き込み用ストリームを作成する
+        await runcmd(cmd.cmd, null, outStream); // runcmd を再帰的に呼び出した
+
       }
       break;
 
@@ -76,6 +92,12 @@ async function runcmd(cmd, stdin = null, stdout = null) {
       {
         // FIXME: ここを実装してね (2行程度)
         // HINT: cmd.file のストリームを createReadStream で作成し runcmd を再帰的に呼び出す
+
+        // よくわからない。上記のHINTの通り実装してみたらとりあえず動いた。
+        // 入力リダイレクト(ファイルからデータを読み込み、コマンドの入力として使う)機能の実装。
+        const inStream = fs.createReadStream(cmd.file); // ファイルを読み込み用ストリーム作成を作成する
+        await runcmd(cmd.cmd, inStream); // ファイルの内容を入力として使用してruncmd を再帰的に呼び出す
+
       }
       break;
 
@@ -83,7 +105,13 @@ async function runcmd(cmd, stdin = null, stdout = null) {
       {
         // FIXME: ここを実装してね (4行程度)
         // HINT: cmd.left と cmd.right に対して runcmd を再帰的に呼び出し Promise.all で待つ
-        // HINT: left と right を繋ぐには new PassThrought() で作成したストリームを使用する
+        // HINT: left と right を繋ぐには new PassThrough() で作成したストリームを使用する
+
+        // パイプ（コマンドの出力を別のコマンドの入力に渡す)機能の実装。
+        const passThrough = new PassThrough(); // PassThroughはデータを連続的に処理できる箱のようなもの
+        await runcmd(cmd.left, null, passThrough), // 左側のコマンドの出力をpassThroughに入れる
+        await runcmd(cmd.right, passThrough) // passThrougを右側のコマンドの入力として使う
+        passThrough.end(); // パイプを閉じる
       }
       break;
 
