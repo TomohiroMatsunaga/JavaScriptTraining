@@ -3,7 +3,7 @@ const { PNG } = require('pngjs'); // PNGのバイナリデータをピクセル�
 
 parentPort.on('message', (imageBuffer) => {
 
-  // Uint8Array型をBuffer型に変換
+  // ArrayBuffer型をBuffer型に変換
   const buffer = Buffer.from(imageBuffer);
 
     // PNGデータをデコードしてピクセルデータを取得

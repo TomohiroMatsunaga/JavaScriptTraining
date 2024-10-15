@@ -24,6 +24,7 @@ function processImage(fileBuffer) {
 }
 
 // index.jsからのリクエストを受け取って画像ファイルをワーカースレッドに投げる
+// 教科書的には、ワーカースレッドと大きなデータをやり取りするときArrayBuffer型でやり取りするのがよいと書かれている
 app.post('/filter', upload.single('image'), async (req, res) => {
 
   try {

@@ -44,7 +44,7 @@ imageInput.addEventListener("change", (event) => {
             method: "POST",
             body: formData
         })
-        // サーバーから返ってきたレスポンスをバイナリデータ（ArrayBuffer）として取得
+        // サーバーから返ってきたレスポンスをArrayBuffer型として取得
         .then(response => response.arrayBuffer())
         // バイナリデータを処理
         .then(buffer => {
