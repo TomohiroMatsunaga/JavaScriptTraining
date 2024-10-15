@@ -21,11 +21,13 @@
     "serve": "^14.2.3",
     "supertest": "^7.0.0"
   },
-  "type": "module",
+  "type": "commonjs",
   "dependencies": {
     "axios": "^1.7.7",
     "commander": "^12.1.0",
     "express": "^4.21.1",
-    "iconv-lite": "^0.6.3"
+    "iconv-lite": "^0.6.3",
+    "jimp": "^1.6.0",
+    "multer": "^1.4.5-lts.1"
   }
 }
