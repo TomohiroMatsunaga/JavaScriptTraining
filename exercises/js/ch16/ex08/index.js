@@ -20,7 +20,7 @@ const token = args[args.indexOf('--token') + 1];
 const user = args[args.indexOf('--user') + 1];
 const repo = args[args.indexOf('--repo') + 1];
 
-// verboseオプションの確認(より詳細な情報を出力するオプション)
+// verbose(バーバス：リクエストとかログをコンソールログに表示させるもの)オプションの確認(より詳細な情報を出力するオプション)
 const verbose = args.includes('-v') || args.includes('--verbose');
 
 // ヘルプオプションがあるとき、使い方を出力する
@@ -95,7 +95,7 @@ function createIssue(title, body) {
     });
   });
 
-  // リクエストに問題が発生したとき
+  // リクエストに問題が発生したとき（verboseのとき）
   req.on('error', (e) => {
     console.error(`Problem with request: ${e.message}`);
   });
@@ -152,7 +152,7 @@ function listOpenIssues() {
     headers: headers
   };
 
-  logRequestOptions(options);  // リクエストオプションをログに出力
+  logRequestOptions(options);  // リクエストオプションをログに出力（verboseのとき）
 
   https.get(options, (res) => { //リクエストのボディーがないので、そのまま送信される
     let responseBody = '';

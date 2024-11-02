@@ -24,8 +24,8 @@ function encrypt64(text, key) {
 
   // 暗号化とBase64エンコード
   //---回答部分Start---
-  const cipher = crypto.createCipheriv(algorithm, key, iv); // AES-256-CBCで暗号化
-  let encryptedBase64 = cipher.update(text, "utf8", "base64"); // 平文を暗号化
+  const cipher = crypto.createCipheriv(algorithm, key, iv); // AES-256-CBCで暗号化するためのcipher(サイファー)オブジェクトを作成
+  let encryptedBase64 = cipher.update(text, "utf8", "base64"); // 平文を暗号化（utf8をbase64に変換）
   encryptedBase64 += cipher.final("base64"); // 128ビットで割り切れなかった場合、残りの部分にパディングして暗号化
   //---回答部分End---
 
@@ -95,8 +95,8 @@ function decrypt64(data, key) {
 
   // Base64デコードと復号
   const storedKey = await readKey(); //ファイルからKeyを読み込む
-  const storedEncryptedData = await readEncrypt64();
-  const decryptedText = decrypt64(storedEncryptedData, storedKey);
+  const storedEncryptedData = await readEncrypt64();// Base64エンコードされた暗号化データを読み込む（ファイルやデータベースから取得することが考えられる）。こちらも非同期処理。
+  const decryptedText = decrypt64(storedEncryptedData, storedKey);// Base64デコードされたデータを、先ほど読み込んだ鍵（storedKey）を使って復号（暗号を解除して元のデータを取り出す）。
 
   console.log("Decrypted Text:", decryptedText);
 })();

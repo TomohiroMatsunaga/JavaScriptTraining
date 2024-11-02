@@ -32,3 +32,6 @@ if (threads.isMainThread) {
     }
     threads.parentPort.postMessage("done");
 }
+
+//問：このようないわゆるメッセージパッシングによって排他制御処理相当を行う並行処理モデルを何と呼ぶか書きなさい。
+// 回答：アクターモデル
