@@ -4,9 +4,11 @@
 【手順】
 ①必要なモジュールをインストールする
 インストールコマンド
-npm install eslint prettier eslint-config-google --save-dev
+npm install eslint@8.50.0 prettier eslint-config-google --save-dev
 --save-devをつけることによってこのモジュールは開発時のみ利用すると宣言する。
 （本番環境でロードされないようにするため）
+eslint@8.50.0で明示的に@8.50.0を選択しているのは、v9以降では記述方法が異なり、
+node_module内のファイルとの互換性が無く、エラーが出たため。
 
 インストールしているもの
 ・eslint：記述間違いを警告してくれる
@@ -23,6 +25,7 @@ npm install eslint prettier eslint-config-google --save-dev
   }
 }
 
+説明
 --ext .js：すべてのJSファイルをESLintの対象にしている
 --ignore-pattern 'format_sample.js'：format_sample.jsをESLintの対象外にしている
 prettier --check .：フォーマット違反を警告表示する
