@@ -12,7 +12,7 @@ node_module内のファイルとの互換性が無く、エラーが出たため
 
 インストールしているもの
 ・eslint：記述間違いを警告してくれる
-・prettier：コードの見た目を自動でととのえる
+・prettier：コードの見た目を自動で整えてくれる
 
 ②package.jsonにPrittierとESLintの設定を書く
 
@@ -24,25 +24,21 @@ node_module内のファイルとの互換性が無く、エラーが出たため
 }
 
 説明
---ext .js：すべてのJSファイルをESLintの対象にしている
---ignore-pattern 'format_sample.js'：format_sample.jsをESLintの対象外にしている
-prettier --check .：フォーマット違反を警告表示する
-prettier --write .：フォーマット違反を自動修正
-prettier:check-fix：警告表示と自動修正を同時に実行する
+lint：ESLintの実行スクリプト
+prettier:check-fix：警告表示と自動修正を同時に実行するprettierの実行スクリプト
 
 ③ESLint の設定ファイルを作成
-ESLintを実行したいディレクトリに.eslintrc.json を作成し、以下の内容を記述
+.eslintrc.json を作成し、以下の内容を記述
 {
   "extends": ["google"]
 }
 説明
 extends：
 	google：Google のスタイルガイドに従う
-	prettier：Prettier と競合する ESLint のルールを無効化
 
 ②Prettierの設定ファイルの作成
 Google のスタイルガイドの内容を記述した.prettierrc を作成する
-（一部だけ記述した）
+（数が多いので一部だけ記述した。残りは時間が余ったら対応する）
 {
   "tabWidth": 2,
   "singleQuote": true,
@@ -95,3 +91,7 @@ a,x,yは再代入していないのでconstを使用すること
 
 修正
 a,x,yを個々にconstで定義するようにした
+
+
+②prettier
+コンソールからex01/format_sample.jsに対する警告が表示され、自動で修正された。
