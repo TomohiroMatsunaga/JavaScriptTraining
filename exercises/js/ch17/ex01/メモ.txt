@@ -33,7 +33,7 @@ prettier --write .：フォーマット違反を自動修正
 prettier:check-fix：警告表示と自動修正を同時に実行する
 
 ③ESLint の設定ファイルを作成
-.eslintrc.json を作成し、以下の内容を記述
+ESLintを実行したいディレクトリに.eslintrc.json を作成し、以下の内容を記述
 {
   "extends": ["google"]
 }
@@ -55,9 +55,47 @@ Google のスタイルガイドの内容を記述した.prettierrc を作成す�
 }
 
 
-③PrittierとESLintの実行
+③PrittierとESLintの実行方法
 ESLint の実行コマンド
 npm run lint
 Prettier の実行コマンド
 npm run prettier:check-fix
 （子ディレクトリまで波及する）
+
+
+【実行結果】
+①ESLint
+>npm run lintを実行した結果、以下の警告が表示された。
+---
+ch17\ex01\lint_sample.js
+  4:1  error  Parsing error: 'with' in strict mode
+
+✖ 1 problem (1 error, 0 warnings)
+---
+
+説明
+strictモードでwithを使えないので警告を出している
+（withの機能：引数で受けたオブジェクトのプロパティやメソッドをオブジェクト名を省略して使える）
+
+
+修正
+withを使わずにMath.を書くようにした。
+
+修正後の再実行で以下の警告が出た
+---
+ch17\ex01\lint_sample.js
+  1:1  error  Split 'let' declarations into multiple statements  one-var
+  4:1  error  'a' is never reassigned. Use 'const' instead       prefer-const
+  5:1  error  'x' is never reassigned. Use 'const' instead       prefer-const
+  6:1  error  'y' is never reassigned. Use 'const' instead       prefer-const
+
+✖ 4 problems (4 errors, 0 warnings)
+  1 error and 0 warnings potentially fixable with the --fix option.
+---
+説明
+複数の変数を一気に定義しないこと
+a,x,yは再代入していないのでconstを使用すること
+
+
+修正
+a,x,yを個々にconstで定義するようにした
