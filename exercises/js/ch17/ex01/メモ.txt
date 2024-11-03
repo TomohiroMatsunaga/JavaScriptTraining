@@ -40,10 +40,10 @@ extends：
 Google のスタイルガイドの内容を記述した.prettierrc を作成する
 （数が多いので一部だけ記述した。残りは時間が余ったら対応する）
 {
-  "tabWidth": 2,
-  "singleQuote": true,
-  "trailingComma": "none",
-  "bracketSpacing": true
+  "tabWidth": 2,  // インデント時のスペースを２つに設定(4.2)
+  "singleQuote": true, // 文字列はダブルクオートではなくシングルくおーとになるように設定(5.6.1)
+  "semi": true, // 末尾に必ずセミコロンをつけるように設定(4.3.2)
+  "bracketSpacing": true, // オブジェクトリテラルの波括弧{}の前後にスペースを入れるように設定(4.6.2)
 }
 
 
