@@ -18,10 +18,8 @@ node_module内のファイルとの互換性が無く、エラーが出たため
 
 {
   "scripts": {
-    "lint": "eslint . --ext .js --ignore-pattern 'format_sample.js'",
-    "prettier:check": "prettier --check .",
-    "prettier:fix": "prettier --write .",
-    "prettier:check-fix": "prettier --check . && prettier --write ."
+    "lint": "eslint .",
+    "prettier:check-fix": "prettier --check --write ."
   }
 }
 
@@ -46,12 +44,10 @@ extends：
 Google のスタイルガイドの内容を記述した.prettierrc を作成する
 （一部だけ記述した）
 {
-  "printWidth": 80,
   "tabWidth": 2,
   "singleQuote": true,
   "trailingComma": "none",
-  "bracketSpacing": true,
-  "arrowParens": "avoid"
+  "bracketSpacing": true
 }
 
 
@@ -60,7 +56,7 @@ ESLint の実行コマンド
 npm run lint
 Prettier の実行コマンド
 npm run prettier:check-fix
-（子ディレクトリまで波及する）
+（子ディレクトリまで波及する。何もなければ表示されない）
 
 
 【実行結果】
