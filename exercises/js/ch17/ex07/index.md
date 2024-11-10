@@ -1,0 +1,6 @@
+質問
+TypeScriptのトランスパイルは@babel/preset-typescriptやtscによって可能だが、それぞれの違いを調べなさい。
+
+解答
+tscはTypeScriptのコードをJavaScriptにコンパイルする。このとき静的な型チェックを行っている。
+@babel/preset-typescriptもTypeScriptのコードをJavaScriptにコンパイルするが、このとき型のチェックは行わない。
