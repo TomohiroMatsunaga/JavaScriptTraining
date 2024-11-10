@@ -1,0 +1,15 @@
+webpackとは何か
+JavascriptやCSSなどのファイルを１つにまとめてブラウザが効率よく読み込めるようにする機能
+
+実行方法
+①webpackのインストール
+>npm install --save-dev webpack webpack-cli
+（「webpack 」はwebpack本体、「webpack-cli」はコマンドラインからwebpackを呼び出せるようにするモジュール）
+
+②Webpack の設定ファイルの作成
+ package.jsonがあるディレクトリでwebpack.config.jsを作成
+
+③bundleしたファイルを生成
+package.jsonがあるディレクトリでnpx webpackを実行しbundle.jsを生成する
+
+③index.htmlでindex.jsではなくbundle.jsを取り込む
