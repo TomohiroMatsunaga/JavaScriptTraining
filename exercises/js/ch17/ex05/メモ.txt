@@ -12,4 +12,4 @@ JavascriptやCSSなどのファイルを１つにまとめてブラウザが効�
 ③bundleしたファイルを生成
 package.jsonがあるディレクトリでnpx webpackを実行しbundle.jsを生成する
 
-③index.htmlでindex.jsではなくbundle.jsを取り込む
+④index.htmlでindex.jsではなくbundle.jsを取り込む
