@@ -1,0 +1,10 @@
+実行手順
+①React プロジェクトを簡単にセットアップできる公式のツール（create-react-app）をex08のディレクトリで実行する
+npx create-react-app todoapp
+↑todoappの部分はモジュール名を指定
+
+②todoapp>src>App.jsを編集し、ToDoアプリを実装
+
+③npm startをsrcと同じディレクトリで実行
+その後自動的にサーバーが立ち上がり、ブラウザが起動する
+（もしブラウザが開かない場合はhttp://localhost:3000にアクセス）
