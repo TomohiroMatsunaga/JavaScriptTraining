@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var task_ts_1 = require("./task.ts");
+var task_1 = require("./task");
 var user1 = { id: 1, name: "Alice" };
 var user2 = { id: 2, name: "Bob" };
-var taskManager = new task_ts_1.TaskManager();
+var taskManager = new task_1.TaskManager();
 taskManager.add({
     title: "テキストを読む",
     completed: false,
@@ -31,4 +31,4 @@ taskManager.add({
 taskManager.completeTask(user1);
 taskManager.completeTask("質問表を確認する");
 console.log(taskManager.getTasks());
-console.log(taskManager.getTasks((0, task_ts_1.not)(task_ts_1.isLowOrCompletedTask)));
+console.log(taskManager.getTasks((0, task_1.not)(task_1.isLowOrCompletedTask)));

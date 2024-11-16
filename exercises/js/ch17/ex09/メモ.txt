@@ -1,0 +1,27 @@
+TypeScript
+Microsoftが開発したプログラミング言語
+JavaScriptのすべての機能に加えて静的型付けの機能を持つ
+
+Flow
+Facebookが開発した静的型付けチェッカー
+
+
+ーーーー
+TypeScriptの方
+task.tsにおける問題は型を記入すること。
+型記入前のコードと比較しなければ変化が分かりにくいと思う
+
+
+実行方法
+①
+tsc(てTypeScriptのコードをJavaScriptにコンパイルする)用の設定値を持つtsconfig.jsonを作成する
+commonjs形式のJavaScriptを出力する設定値を書く。
+
+②
+「tsc caller.ts」を実行してTypeScriptのコードをJavaScriptにコンパイルする
+実行したディレクトリにtask.jsとcaller.jsが生成される
+
+③package.jsonの設定値をcommonjsにする
+（ex09にpackage.jsonをコピーした。ex08まではEX Moduleで実装している）
+
+④node caller.jsを実行した
