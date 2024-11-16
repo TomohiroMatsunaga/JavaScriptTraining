@@ -1,14 +1,15 @@
-import {
-  PriorityTask,
+// @flow
+
+const {
   TaskManager,
   isLowOrCompletedTask,
   not,
-} from "./task.ts";
+} = require("./task.flow.js");
 
 const user1 = { id: 1, name: "Alice" };
 const user2 = { id: 2, name: "Bob" };
 
-const taskManager = new TaskManager<PriorityTask>();
+const taskManager = new TaskManager();
 
 taskManager.add({
   title: "テキストを読む",

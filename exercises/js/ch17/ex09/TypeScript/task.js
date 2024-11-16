@@ -16,7 +16,7 @@ function isUserObject(obj) {
         typeof obj["id"] === "number" &&
         typeof obj["name"] === "string");
 }
-// <T extends Task>はジェネリクス。クラス内で使用されるTはTask型として扱えることを示す。
+// <T extends Task>はジェネリクス。クラス内で使用されるTはTask型PriorityTask型として扱えることを示す。
 var TaskManager = /** @class */ (function () {
     function TaskManager() {
         this._tasks = []; // T型の配列の変数を定義。初期値は空の配列。
@@ -29,12 +29,12 @@ var TaskManager = /** @class */ (function () {
     // Userオブジェクトを指定した場合はそのUserのタスクを全て完了にする
     // 文字列を指定した場合は、そのタイトルのタスクを全て完了にする
     TaskManager.prototype.completeTask = function (target) {
-        if (isUserObject(target)) { // user型の時
+        if (isUserObject(target)) { // user型のとき
             this._tasks
                 .filter(function (t) { return t.user === target; })
                 .forEach(function (t) { return (t.completed = true); });
         }
-        else { // sting型の時
+        else { // sting型のとき
             this._tasks
                 .filter(function (t) { return t.title === target; })
                 .forEach(function (t) { return (t.completed = true); });
