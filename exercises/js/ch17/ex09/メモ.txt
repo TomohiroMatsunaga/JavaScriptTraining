@@ -3,7 +3,7 @@ Microsoftが開発したプログラミング言語
 JavaScriptのすべての機能に加えて静的型付けの機能を持つ
 
 Flow
-Facebookが開発した静的型付けチェッカー
+Facebook(Meta)が開発した静的型付けチェッカー
 
 ーーーーー
 TypeScriptの方はTaskManagerでジェネリクスを使っているが、FlowはTaskManagerでジェネリクスを使っていない。
