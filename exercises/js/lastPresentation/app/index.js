@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 現在の時間を表示する関数
+    // 現在時刻を表示する関数
     function updateCurrentTime() {
         const now = new Date();
         const hours = String(now.getHours()).padStart(2, '0');
@@ -107,35 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(`通信エラーが発生しました: ${error.message}`);
         }
     });
-
-    // 設定値クリアのボタンが押されたとき、Local Storageをクリアし、ページを再読み込みする
-    document.getElementById("clear-storage").addEventListener("click", () => {
-        // Local Storageをクリア
-        localStorage.clear();
-
-        // フォームの初期化
-        const form = document.querySelector('form');
-        form.reset();
-
-        // 全てのラジオボタンの選択を解除
-        document.querySelectorAll('input[name="song"]').forEach((radio) => {
-            radio.checked = false; // 手動で解除
-        });
-
-        // アラームのセレクトボックスのリセット
-        const hourSelect = document.getElementById('alarm-hour');
-        const minuteSelect = document.getElementById('alarm-minute');
-        if (hourSelect) hourSelect.selectedIndex = 0; // 最初の選択肢に戻す
-        if (minuteSelect) minuteSelect.selectedIndex = 0;
-
-        // IPアドレスの入力をクリア
-        const ipInput = document.getElementById('ip-address');
-        if (ipInput) ipInput.value = ""; // 手動でクリア
-
-        // ページをリロードする
-        location.reload();
-    });
-
 
     // ページ読み込み時に現在の時間を更新
     updateCurrentTime();
