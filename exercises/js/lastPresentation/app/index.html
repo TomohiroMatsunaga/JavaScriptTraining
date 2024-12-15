@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クリスマスベル時計</title>
+    <script src="index.js" defer></script>
+</head>
+<body>
+    <h1>クリスマスベル時計</h1>
+
+    <form>
+        <h2>曲の選択</h2>
+        <!-- 曲の選択ボタン -->
+        <input type="radio" id="jingle-bells" name="song" value="ジングルベル">
+        <label for="jingle-bells">ジングルベル</label><br>
+        <input type="radio" id="ode-to-joy" name="song" value="歓喜の歌">
+        <label for="ode-to-joy">歓喜の歌</label><br>
+
+        <h2>現在の時間</h2>
+        <!-- 現在時刻を動的に表示 -->
+        <p id="current-time"></p>
+
+        <h2>アラームの時間</h2>
+        <!-- アラームの時間 -->
+        <select id="alarm-hour" name="alarm-hour">
+            <script>
+                for (let hour = 0; hour < 24; hour++) {
+                    document.write(`<option value="${hour}">${hour}</option>`);
+                }
+            </script>
+        </select>
+        時：
+        <select id="alarm-minute" name="alarm-minute">
+            <script>
+                for (let minute = 0; minute < 60; minute++) {
+                    document.write(`<option value="${minute}">${minute}</option>`);
+                }
+            </script>
+        </select>
+        分
+
+        <h2>IPアドレス</h2>
+        <!-- IPアドレス入力 -->
+        <input type="text" id="ip-address" name="ip-address" placeholder="例: 192.168.0.1"><br><br>
+
+        <!-- 設定ボタン -->
+        <button type="submit">設定</button>
+        <!-- 設定をクリアするボタン -->
+        <button type="button" id="clear-storage">設定をクリア</button>
+    </form>
+</body>
+</html>

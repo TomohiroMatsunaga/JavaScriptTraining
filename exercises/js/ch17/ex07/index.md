@@ -4,3 +4,5 @@ TypeScriptのトランスパイルは@babel/preset-typescriptやtscによって�
 解答
 tscはTypeScriptのコードをJavaScriptにコンパイルする。このとき静的な型チェックを行っている。
 @babel/preset-typescriptもTypeScriptのコードをJavaScriptにコンパイルするが、このとき型のチェックは行わない。
+
+講師＞さらに、古いブラウザ環境でも互換性を保ちながら実行してくれる。例えば、Promiseをサポートしていないブラウザ向けにトランスコンパイルするならBabelじゃないとうまく動かない

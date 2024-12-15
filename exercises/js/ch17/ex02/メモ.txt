@@ -2,4 +2,4 @@ ch16で作ったコードに対してexportをした。promisを使って値を�
 
 Jestを使ってcreateIssue, closeIssue, listOpenIssuesのモック関数を作った。
 
-Pollyをを使って、２回目以降のテスト実行は実際にissueを操作することなく、ファイルに保存したデータを利用することにした。
+Polly（ポーリー）を使って、２回目以降のテスト実行は実際にissueを操作することなく、ファイルに保存したデータを利用することにした。
