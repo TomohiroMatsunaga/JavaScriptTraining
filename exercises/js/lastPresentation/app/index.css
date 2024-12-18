@@ -1,0 +1,131 @@
+/* 全体の背景 */
+body {
+    background: #fefefe url('https://www.transparenttextures.com/patterns/dark-snow.png') repeat;
+    font-family: 'Arial', sans-serif;
+    color: #333333;
+    margin: 0;
+    padding: 0;
+}
+
+/* タイトルとフォームを横並びにするコンテナ */
+.top-container {
+    display: flex;              /* 横並び (flex-direction: row) */
+    justify-content: flex-start;/* 左寄せ */
+    align-items: flex-start;    /* 上揃え */
+    gap: 20px;                  /* タイトルとフォームの隙間 */
+    margin: 10px;               /* 画面端との余白 */
+    padding: 10px;
+}
+
+/* タイトル（クリスマスベル時計） */
+h1 {
+    margin: 0; 
+    color: #d7263d; /* 赤色 */
+    font-size: 2em;
+    text-shadow: 2px 2px #fff;
+    padding: 10px;
+    position: relative; /* 擬似要素の配置に必要 */
+}
+
+/* クリスマスツリー絵文字を左右に */
+h1::after {
+    content: "🎄";
+    font-size: 1em; 
+    margin: 0 8px;
+    position: relative;
+    top: -2px; /* 絵文字位置微調整 */
+}
+
+/* セクション見出し（曲選択、現在時刻、アラームなど） */
+h2 {
+    color: #008744; /* 緑色 */
+    margin: 10px 0 5px 0;
+    text-shadow: 1px 1px #ffffff;
+}
+
+/* フォーム全体 */
+form {
+    background: rgba(255, 248, 225, 0.9); /* 薄い金色＋透明感 */
+    border: double 4px #d7263d; /* 二重線(赤)でクリスマス感 */
+    border-radius: 10px;
+    padding: 15px 20px;
+    text-align: left;    /* フォーム要素を左寄せ */
+    width: 300px;        /* 横幅を固定してコンパクトに */
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+/* 曲選択ラジオボタンとラベル */
+input[type="radio"] + label {
+    color: #008744; /* 緑色 */
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+input[type="radio"]:checked + label {
+    color: #d7263d; /* 赤色 */
+}
+
+/* 現在時刻を左寄せ */
+#current-time {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #d7263d;
+    text-align: left;
+    margin-left: 0;
+}
+
+/* ドロップダウンセレクト */
+select {
+    background: #ffffff;
+    border: 2px solid #d7263d; /* 赤色 */
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 1em;
+    margin: 5px 0;
+}
+
+/* IPアドレス入力フィールド */
+input[type="text"] {
+    background: #ffffff;
+    border: 2px solid #d7263d; /* 赤色 */
+    border-radius: 5px;
+    padding: 5px;
+    width: 90%;
+    margin: 5px 0;
+}
+
+/* ボタン */
+button {
+    background: #d7263d; /* 赤色 */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 8px 16px;
+    margin-top: 10px;
+    text-shadow: 1px 1px #333333;
+}
+
+button:hover {
+    background: #008744; /* 緑色 */
+    transition: 0.3s;
+}
+
+/* レスポンシブ対応：幅が狭い端末では縦に並べる */
+@media screen and (max-width: 600px) {
+    .top-container {
+        flex-direction: column; /* 縦並びに切り替え */
+        align-items: center;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    form {
+        width: 90%;
+        margin-bottom: 20px;
+    }
+}
